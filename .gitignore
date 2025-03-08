@@ -52,6 +52,8 @@ Mkfile.old
 dkms.conf
 
 # Directories
-build/
-docs/
+build/*
+docs/*
+html/*
+latex/*
 .vscode
