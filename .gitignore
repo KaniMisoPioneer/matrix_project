@@ -54,3 +54,4 @@ dkms.conf
 # Directories
 build/
 docs/
+.vscode
