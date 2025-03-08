@@ -1,6 +1,6 @@
 #include "matrix.h"
 
-Matrix matrixCreate(int rows, int cols){
+Matrix *matrixCreate(int rows, int cols){
     if (rows <= 0 || cols <= 0) {
         return NULL;
     }
@@ -46,7 +46,7 @@ void matrixFree(Matrix *matrix){
     }
 }
 
-Matrix matrixLoadFromFile(const char *filename){
+Matrix *matrixLoadFromFile(const char *filename){
     FILE *file = fopen(filename, "r");
     int rows = 0, cols = 0;
     Matrix *res;
@@ -63,8 +63,30 @@ Matrix matrixLoadFromFile(const char *filename){
     return res;
 }
 
+void matrixPrint(const Matrix* matrix){
+    printFunc(matrix, stdout);
+}
+
+int matrixSaveToFile(const Matrix* matrix, const char* filename){
+    int returnCode = 0;
+    if (matrix && filename) {
+        FILE *file = fopen(filename, "w");
+        if (file)
+            if (fprintf(file, "%d %d\n", matrix->rows, matrix->cols) < 0)
+                returnCode = -1;
+
+        if (!returnCode)
+            returnCode = printfFunc(matrix, file);
+
+        fclose(file);
+    } else
+        returnCode = -1;
+
+    return returnCode;
+}
+
 Matrix *matrixCopy(const Matrix *source){
-    Matrix *result = matrixCreate(source->row, source->cols);
+    Matrix *result = matrixCreate(source->rows, source->cols);
 
     for (int i = 0; i < source->rows; i++)
         for (int j = 0; j < source->cols; j++)
@@ -127,7 +149,7 @@ MATRIX_TYPE getDeterminant(const Matrix *A) {
     MATRIX_TYPE det = 0;
 
     if (!A || A->rows != A->cols)
-        det = NAN;
+        det = 0;
     else {
         if (A->rows == 1)
             det = A->data[0][0];
