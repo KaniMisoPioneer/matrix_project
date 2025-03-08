@@ -76,7 +76,7 @@ int matrixSaveToFile(const Matrix* matrix, const char* filename){
                 returnCode = -1;
 
         if (!returnCode)
-            returnCode = printfFunc(matrix, file);
+            returnCode = printFunc(matrix, file);
 
         fclose(file);
     } else

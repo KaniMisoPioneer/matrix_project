@@ -3,6 +3,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <math.h>
 
 #include "../../include/config.h"
@@ -15,6 +16,8 @@ typedef struct{
     int cols;           ///< Количество столбцов
     MATRIX_TYPE** data; ///< Данные матрицы
 } Matrix;
+
+#include "../output/output.h"
 
 /**
  * @brief Создает новую матрицу с заданными размерами
@@ -95,5 +98,7 @@ Matrix* matrixTranspose(const Matrix* matrix);
  * @return Значение детерминанта матрицы
  */
 MATRIX_TYPE getDeterminant(const Matrix* matrix);
+
+Matrix *getMinor(const Matrix *A, int rows, int columns);
 
 #endif // MATRIX_H
