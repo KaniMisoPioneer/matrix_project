@@ -1,19 +1,5 @@
 #include "test_matrix.c"
 
-int doubleCompare(MATRIX_TYPE a, MATRIX_TYPE b) {
-    return fabs(a - b) < 1e-6;
-}
-
-Matrix *createTestMatrix(int rows, int cols, MATRIX_TYPE data[]) {
-    Matrix *m = createMatrix(rows, cols);
-    for (int i = 0; i < rows; i++) {
-        for (int j = 0; j < cols; j++) {
-            m->data[i][j] = data[i * cols + j];
-        }
-    }
-    return m;
-}
-
 /* Главная функция для запуска тестов */
 int main() {
     CU_pSuite suite = NULL;

@@ -2,9 +2,22 @@
 #include <CUnit/Basic.h>
 
 #include "../src/matrix/matrix.h"
-#include "../src/output/output.h"
 
 #define EPS 1e-6
+
+int doubleCompare(MATRIX_TYPE a, MATRIX_TYPE b) {
+    return fabs(a - b) < 1e-6;
+}
+
+Matrix *createTestMatrix(int rows, int cols, MATRIX_TYPE data[]) {
+    Matrix *m = matrixCreate(rows, cols);
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < cols; j++) {
+            m->data[i][j] = data[i * cols + j];
+        }
+    }
+    return m;
+}
 
 void testDeterminant(void) {
     MATRIX_TYPE data1[] = {5};
@@ -43,14 +56,14 @@ void testMatrixMul(void) {
     matrixFree(result);
 }
 
-void testTranspase(void) {
+void testTranspose(void) {
     MATRIX_TYPE data[] = {1, 2, 3, 4, 5, 6};
     Matrix *m = createTestMatrix(2, 3, data);
     Matrix *transposed = matrixTranspose(m);
     CU_ASSERT_EQUAL(transposed->rows, 3);
     CU_ASSERT_EQUAL(transposed->cols, 2);
-    CU_ASSERT_TRUE(double_compare(transposed->data[0][0], 1));
-    CU_ASSERT_TRUE(double_compare(transposed->data[1][1], 5));
+    CU_ASSERT_TRUE(doubleCompare(transposed->data[0][0], 1));
+    CU_ASSERT_TRUE(doubleCompare(transposed->data[1][1], 5));
 
     matrixFree(m);
     matrixFree(transposed);
@@ -90,20 +103,16 @@ void testMatrixSum(void) {
     matrixFree(result);
 }
 
-void test_copy_matrix_1(void) {
+void testMatrixCopy(void) {
     MATRIX_TYPE data[] = {1, 2, 3, 4};
-    Matrix *orig = create_test_matrix(2, 2, data);
-    Matrix *copy = copy_matrix(orig);
+    Matrix *orig = createTestMatrix(2, 2, data);
+    Matrix *copy = matrixCopy(orig);
 
     CU_ASSERT_EQUAL(copy->rows, orig->rows);
     CU_ASSERT_EQUAL(copy->cols, orig->cols);
-    CU_ASSERT_TRUE(double_compare(copy->data[0][0], 1));
-    CU_ASSERT_TRUE(double_compare(copy->data[1][1], 4));
+    CU_ASSERT_TRUE(doubleCompare(copy->data[0][0], 1));
+    CU_ASSERT_TRUE(doubleCompare(copy->data[1][1], 4));
 
     matrixFree(orig);
     matrixFree(copy);
-}
-
-int doubleCompare(MATRIX_TYPE a, MATRIX_TYPE b) {
-    return fabs(a - b) < EPS;
 }
