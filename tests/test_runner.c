@@ -1,3 +1,5 @@
+#include <CUnit/CUnit.h>
+
 #include "../src/matrix/matrix.h"
 
 void testCreateAndFree(void) {

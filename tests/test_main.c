@@ -1,4 +1,5 @@
-#include "test_matrix.c"
+#include "test_matrix.h"
+#include <CUnit/Basic.h>
 
 /* Главная функция для запуска тестов */
 int main() {

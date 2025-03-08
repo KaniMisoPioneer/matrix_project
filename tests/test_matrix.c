@@ -1,7 +1,7 @@
 #include <CUnit/CUnit.h>
 #include <CUnit/Basic.h>
 
-#include "../src/matrix/matrix.h"
+#include "test_matrix.h"
 
 #define EPS 1e-6
 
