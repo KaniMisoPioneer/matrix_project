@@ -52,7 +52,7 @@ Matrix *matrixLoadFromFile(const char *filename){
     Matrix *res;
 
     if (file && fscanf(file, "%d%d", &rows, &cols) == 2) {
-        res = create_matrix(rows, cols);
+        res = matrixCreate(rows, cols);
         for (int i = 0; i < rows; i++)
             for (int j = 0; j < cols; j++)
                 fscanf(file, "%lf", &(res->data[i][j]));
@@ -157,10 +157,28 @@ MATRIX_TYPE getDeterminant(const Matrix *A) {
             det = A->data[0][0] * A->data[1][1] - A->data[0][1] * A->data[1][0];
         else
             for (int k = 0; k < A->cols; k++) {
-                Matrix *minor = getMinorMatrix(A, 0, k);
-                det += pow(-1, k) * A->data[0][k] * determinant(minor);
-                free_matrix(minor);
+                Matrix *minor = getMinor(A, 0, k);
+                det += pow(-1, k) * A->data[0][k] * getDeterminant(minor);
+                matrixFree(minor);
             }
     }
     return det;
+}
+
+Matrix *getMinor(const Matrix *A, int rows, int columns) {
+    Matrix *minor = matrixCreate(A->rows - 1, A->cols - 1);
+
+    for (int i = 0, mi = 0; i < A->rows; i++) {
+        if (i != rows) {
+            for (int j = 0, mj = 0; j < A->cols; j++) {
+                if (j != columns) {
+                    minor->data[mi][mj] = A->data[i][j];
+                    mj++;
+                }
+            }
+            mi++;
+        }
+    }
+
+    return minor;
 }
